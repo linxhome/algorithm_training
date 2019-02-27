@@ -1,0 +1,34 @@
+计算字符串相似度(distance + 1的倒数)
+
+fun getDistance(a: CharSequence, b: CharSequence): Int {
+    println("compare ${a} ${b}")
+
+    if (a.length == 0) {
+        return b.length
+    }
+    if (b.length == 0) {
+        return a.length
+    }
+    val aStart = 0
+    val bStart = 0
+    if (a[aStart] == b[bStart]) {
+        if (aStart + 1 == a.length) {
+            return b.length - bStart - 1
+        }
+        if (bStart + 1 == b.length) {
+            return a.length - aStart - 1
+        }
+        return getDistance(a.subSequence(aStart + 1, a.length), b.subSequence(bStart + 1, b.length))
+    } else {
+        if (a.length == b.length) {
+            val newA = "${b[0]}${a.subSequence(1, a.length)}"
+            return getDistance(newA, b) + 1
+        } else if (a.length > b.length) {
+            val newB = "${a[0]}${b}"
+            return getDistance(a, newB) + 1
+        } else {
+            val newA = "${b[0]}${a}"
+            return getDistance(newA, b) + 1
+        }
+    }
+}
