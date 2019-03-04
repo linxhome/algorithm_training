@@ -1,4 +1,4 @@
-用链表表示大数，如何进行加法运算
+//用链表表示大数，如何进行加法运算
 
 class Node(var data: Int = 0, var next: Node? = null)
 
