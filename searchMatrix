@@ -1,0 +1,85 @@
+Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
+
+Integers in each row are sorted in ascending from left to right.
+Integers in each column are sorted in ascending from top to bottom.
+Example:
+
+Consider the following matrix:
+
+[
+  [1,   4,  7, 11, 15],
+  [2,   5,  8, 12, 19],
+  [3,   6,  9, 16, 22],
+  [10, 13, 14, 17, 24],
+  [18, 21, 23, 26, 30]
+]
+Given target = 5, return true.
+
+Given target = 20, return false.
+
+import java.util.*
+
+fun main(args: Array<String>) {
+
+    val matrix = arrayOf(intArrayOf(1, 4, 7, 11, 15), intArrayOf(2, 5, 8, 12, 19), intArrayOf(3, 6, 9, 16, 22), intArrayOf(10, 13, 14, 17, 24), intArrayOf(18, 21, 23, 26, 30))
+    val targe = 22
+    println(searchMatrix(matrix, targe))
+}
+
+
+fun searchMatrix(matrix: Array<IntArray>, target: Int): Boolean {
+    var value = matrix[0][0]
+    var position = Pair(0, 0)
+
+
+    val m = matrix.size
+    val n = matrix[0].size
+
+    val hasEntered = HashSet<Pair<Int, Int>>()
+    val willEnter = LinkedList<Pair<Int, Int>>()
+    hasEntered.add(position)
+
+    do {
+        if (target == value) {
+            return true
+        } else if (target > value) {
+            // right down and rightdown
+            val rightPosition = Pair(position.first + 1, position.second)
+            val downRightPosition = Pair(position.first + 1, position.second + 1)
+            val downPosition = Pair(position.first, position.second + 1)
+            if (!hasEntered.contains(downRightPosition) && isValidPosition(downRightPosition, m, n)) {
+                willEnter.push(downRightPosition)
+            } else if (!hasEntered.contains(rightPosition) && isValidPosition(rightPosition, m, n)) {
+                willEnter.push(rightPosition)
+            } else if (!hasEntered.contains(downPosition) && isValidPosition(downPosition, m, n)) {
+                willEnter.push(downPosition)
+            }
+        } else if (target < value) {
+            // right down and rightdown
+            val rightPosition = Pair(position.first - 1, position.second)
+            val downRightPosition = Pair(position.first - 1, position.second - 1)
+            val downPosition = Pair(position.first, position.second - 1)
+
+            if (!hasEntered.contains(downRightPosition) && isValidPosition(downRightPosition, m, n)) {
+                willEnter.push(downRightPosition)
+            } else if (!hasEntered.contains(rightPosition) && isValidPosition(rightPosition, m, n)) {
+                willEnter.push(rightPosition)
+            } else if (!hasEntered.contains(downPosition) && isValidPosition(downPosition, m, n)) {
+                willEnter.push(downPosition)
+            }
+        }
+
+        if (willEnter.isEmpty()) {
+            return false
+        }
+        position = willEnter.pop()
+        hasEntered.add(position)
+        value = matrix[position.first][position.second]
+    } while (true)
+
+
+}
+
+fun isValidPosition(position: Pair<Int, Int>, m: Int, n: Int): Boolean {
+    return (position.first < m) && (position.second < n) && (position.first >= 0) && (position.second >= 0)
+}
