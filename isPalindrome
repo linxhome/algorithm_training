@@ -1,0 +1,44 @@
+/**
+Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+
+Note: For the purpose of this problem, we define empty string as valid palindrome.
+ */
+
+fun main(args: Array<String>) {
+    // print(isPalindrome("A man, a plan, a canal: Panama"))
+    print(isPalindrome("`l;`` 1o1 ??;l`"))
+}
+
+fun isPalindrome(s: String): Boolean {
+    var leftIndex = 0
+    var rightIndex = s.length - 1
+    do {
+        if (leftIndex >= s.length || rightIndex < 0) {
+            return true
+        }
+        val leftChar = s.get(leftIndex)
+        val rightChar = s.get(rightIndex)
+        if (!isChar(leftChar)) {
+            leftIndex++
+            continue
+        }
+        if (!isChar(rightChar)) {
+            rightIndex--
+            continue
+        }
+        if (!isEqual(leftChar, rightChar)) {
+            return false
+        } else {
+            leftIndex++
+            rightIndex--
+        }
+    } while (true)
+}
+
+fun isEqual(charA: Char, charB: Char): Boolean {
+    return charA.equals(charB) || (charA in 'A'..'Z' && (charA + 32).equals(charB)) || (charA in 'a'..'z' && (charA - 32).equals(charB))
+}
+
+fun isChar(char: Char): Boolean {
+    return char in 'a'..'z' || char in 'A'..'Z' || char in '0'..'9'
+}
